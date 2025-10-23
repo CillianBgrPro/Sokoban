@@ -2,7 +2,7 @@ NAME = sokoban
 
 SRCS = main.c \
 	board.c \
-	init.c
+	init.c \
 
 all: $(NAME)
 

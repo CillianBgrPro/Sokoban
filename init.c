@@ -15,7 +15,7 @@ char *init_objects(void) {
 
     char *tab_values = malloc(ROWS * COLS * sizeof(char));
     if (!tab_values) {
-        perror("Erreur d'allocation mémoire");
+        perror("Erreur d'allocation memoire");
         exit(EXIT_FAILURE);
     }
 
@@ -38,7 +38,11 @@ char *init_objects(void) {
     int box_position = -1;
     while (box_position == -1) {
         int index = rand() % (ROWS * COLS);
-        if (tab_values[index] == ' ' && index != player_position) {
+        int row = index / COLS;
+        int col = index % COLS;
+        
+        if (row > 0 && row < ROWS - 1 && col > 0 && col < COLS - 1 && 
+            tab_values[index] == ' ' && index != player_position) {
             tab_values[index] = box;
             box_position = index;
         }
@@ -47,7 +51,11 @@ char *init_objects(void) {
     int win_position = -1;
     while (win_position == -1) {
         int index = rand() % (ROWS * COLS);
-        if (tab_values[index] == ' ' && index != player_position && index != box_position) {
+        int row = index / COLS;
+        int col = index % COLS;
+        
+        if (row > 0 && row < ROWS - 1 && col > 0 && col < COLS - 1 && 
+            tab_values[index] == ' ' && index != player_position && index != box_position) {
             tab_values[index] = win;
             win_position = index;
         }
