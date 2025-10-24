@@ -45,6 +45,19 @@ void display_board(char *tab_values) {
         }
     }
 
+
+    int player_pos = -1;
+    int box_pos = -1;
+    
+    for (int i = 0; i < ROWS * COLS; i++) {
+        if (tab_values[i] == 'o') {
+            player_pos = i;
+        }
+        if (tab_values[i] == 'X') {
+            box_pos = i;
+        }
+    }
+
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             int index = i * COLS + j;
@@ -63,6 +76,28 @@ void display_board(char *tab_values) {
         }
         printf("\n");
     }
+    
+
+    printf("\n--- Indices ---\n");
+    
+    if (player_pos != -1) {
+        int player_row = player_pos / COLS;
+        int player_col = player_pos % COLS;
+        printf("Joueur : %d %d\n", player_row, player_col);
+    }
+    
+    if (box_pos != -1) {
+        int box_row = box_pos / COLS;
+        int box_col = box_pos % COLS;
+        printf("Boite  : %d %d\n", box_row, box_col);
+    }
+    
+    if (win_position != -1) {
+        int win_row = win_position / COLS;
+        int win_col = win_position % COLS;
+        printf("Emplacement : %d %d\n", win_row, win_col);
+    }
+    printf("---------------\n");
 }
 
 bool is_valid_move(char *tab_values, char move) {
