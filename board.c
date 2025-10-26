@@ -8,21 +8,23 @@
 
 static int win_position = -1;
 
+//j'alloue la mémoire nécessaire afin de stocker le tableau de 10 x 10, soit la taille de Rows qui correspond aux lignes et Cols qui correspond aux colonnes 
+
 char *create_board(void) {
     char *tab_values = malloc(ROWS * COLS * sizeof(char));
-    if (!tab_values) {
+    if (!tab_values) { //si la mémoire allouée n'est pas suffisante le message d'erreur si dessous s'affiche, j'ai trouvé le perror sur https://koor.fr/C/cstdio/perror.wp
         perror("Erreur d'allocation memoire");
-        exit(EXIT_FAILURE);
+        exit(0); //je mets fin au programme
     }
 
-    for (int i = 0; i < ROWS * COLS; i++) {
+    for (int i = 0; i < ROWS * COLS; i++) { //je créer un boucle for dans laquelle je déclare une variable i qui a pour valeur 0, tant que i est inférieur au nombre de case du tableau soit 10 x 10 donc 100, on attribue ' ' à chaque case d'indice i
         tab_values[i] = ' ';
     }
 
     return tab_values;
 }
 
-void display_board(char *tab_values) {
+void display_board(char *tab_values) { //je créé mon tableau qui s'affichera en console lors de l'execution du programme, # représente les murs et ' ' les cases dans lesquelles le personnage pourra se déplacer 
     char board[ROWS][COLS] = {
         {'#','#','#','#','#','#','#','#','#','#'},
         {'#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
@@ -36,6 +38,7 @@ void display_board(char *tab_values) {
         {'#','#','#','#','#','#','#','#','#','#'}
     };
 
+    //cette condition permet de chercher ou se situe la win_position, tant que win_position = -1 ce qui signifie qu'elle n'est pas encore trouvé, une boucle for s'execute et check les case une par une jusqu'à trouver le '.'
     if (win_position == -1) {
         for (int i = 0; i < ROWS * COLS; i++) {
             if (tab_values[i] == '.') {
@@ -49,10 +52,12 @@ void display_board(char *tab_values) {
     int player_pos = -1;
     int box_pos = -1;
     
+    //permet de trouver l'index de player_pos 
     for (int i = 0; i < ROWS * COLS; i++) {
         if (tab_values[i] == 'o') {
             player_pos = i;
         }
+        //permet de trouver l'index de box_pos
         if (tab_values[i] == 'X') {
             box_pos = i;
         }
@@ -77,7 +82,7 @@ void display_board(char *tab_values) {
         printf("\n");
     }
     
-
+//On affiche les indices de chaque éléments en sortant l'indice de Cols et de Row sous le format boite : x y 
     printf("\n--- Indices ---\n");
     
     if (player_pos != -1) {
@@ -100,6 +105,7 @@ void display_board(char *tab_values) {
     printf("---------------\n");
 }
 
+//fonction booleen qui permet de verifier si le movement spécifier par le joueur est valide, 
 bool is_valid_move(char *tab_values, char move) {
     int player_pos = -1;
     for (int i = 0; i < ROWS * COLS; i++) {
@@ -157,6 +163,7 @@ bool is_valid_move(char *tab_values, char move) {
     return true;
 }
 
+//fonction qui permet au joueur de se déplacer
 void move_player(char *tab_values, char move) {
     int player_pos = -1;
     for (int i = 0; i < ROWS * COLS; i++) {
@@ -171,6 +178,7 @@ void move_player(char *tab_values, char move) {
     int next_pos = -1;
     int after_next_pos = -1;
 
+    //mise en place de toutes les conditions qui permet de determiner le déplacement du joueur en fonction de la lettre entré en console 
     if (move == 'z') {
         next_pos = player_pos - COLS;
         after_next_pos = next_pos - COLS;
@@ -197,6 +205,7 @@ void move_player(char *tab_values, char move) {
     }
 }
 
+//je check si X est sur la win position et dans ce cas la partie est remportée 
 bool check_win(char *tab_values) {
 
     if (win_position != -1 && tab_values[win_position] == 'X') {
@@ -205,6 +214,8 @@ bool check_win(char *tab_values) {
     return false;
 }
 
+
+//je check toutes les possibilités pour savoir si la caisse est bloquée, et dans ce cas je renvoie dans mon main le message perdu
 bool check_lose(char *tab_values) {
 
     int box_pos = -1;
@@ -245,6 +256,7 @@ bool check_lose(char *tab_values) {
     return false;
 }
 
+//enregistrement de la position des éléments dans un fichier end.txt, je me suis aidé de ChatGpt pour réaliser ceci, je lui est demander comment débuter car j'étais bloqué 
 void save_board(char *tab_values) {
     FILE *file = fopen("end.txt", "w");
     if (!file) {

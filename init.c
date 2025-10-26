@@ -12,17 +12,18 @@ char *init_objects(void) {
     char box = 'X';
     char player = 'o';
     char win = '.';
-
+//renvoie une erreur si la mémoire n'est pas alloué correctement
     char *tab_values = malloc(ROWS * COLS * sizeof(char));
     if (!tab_values) {
         perror("Erreur d'allocation memoire");
-        exit(EXIT_FAILURE);
+        exit(0);
     }
 
     for (int i = 0; i < ROWS * COLS; i++) {
         tab_values[i] = ' ';
     }
 
+    //place le player à un endroit aléatoir sur le tableau
     int player_position = -1;
     while (player_position == -1) {
         int index = rand() % (ROWS * COLS);
@@ -34,7 +35,7 @@ char *init_objects(void) {
             player_position = index;
         }
     }
-
+//place la box à un endroit aléatoire sur le tableau
     int box_position = -1;
     while (box_position == -1) {
         int index = rand() % (ROWS * COLS);
@@ -47,7 +48,7 @@ char *init_objects(void) {
             box_position = index;
         }
     }
-
+//place la win_position à un endroit aléatoire sur le tableau
     int win_position = -1;
     while (win_position == -1) {
         int index = rand() % (ROWS * COLS);
